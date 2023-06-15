@@ -1,0 +1,54 @@
+@everyone
+
+Dr Juan and I worked trying to fix my issues with the spinup install.
+
+
+We first followed the steps below as I initially did not do that when I found my issues
+
+mkdir –p ~/python/venv
+mkdir –p ~/python/drl
+virtualenv –p spup_env
+source ~/python/venv/spup_env/bin/activate
+sudo apt-get update && sudo apt-get install libopenmpi-dev 
+cd ~/python/drl
+git clone https://github.com/openai/spinningup.git
+cd spinningup
+python3 -m pip install -e . 
+
+When we ran python3 -m pip install -e ., we saw that it broke at 'tensorflow>=1.8.0,<2.0' as most of the versions of 
+tensorflow that were available were all 2.0.8 and above.
+
+We then had to manually install 'mpi4py', 'torch==1.3.1', and 'tqdm' by running python3 -m pip install mpi4py, 
+python3 -m pip install torch == 1.3.1, and python3 -m pip install tqdm
+
+We also checked if we had to install gymnasium again on the virtual environment by running python3 -m pip install gymnasium
+Since it was installed, we ran pip3 list | grep gymnasium to basically copy it over to the virtualenv
+
+First, we deactivated the virtualenv by running deactivate 
+
+The we cd out of all the folders to then install poetry 
+
+We then installed poetry by running python3 -m pip install poetry
+
+Then, we cd into python/drl because we need to clone the cleanrl repo
+
+We then ran the command git clone https://github.com/vwxyzjn/cleanrl.git && cd cleanrl as this clones the github repo as well as going into the cleanrl folder 
+
+we then ran poetry install as it installs poetry into the cleanrl folder
+
+If you want to use pip instead of poetry, then you can run pip install -r requirements/requirements.txt to install the requirements and install poetry system wide
+
+We also ran poetry shell as none of the cleanrl environments will work outside of the shell
+
+To test the shell and get the video version, Dr. Juan and I  ran the command python cleanrl/ppo.py \ --seed 1 \ --env-id CartPole-v0 \ --total-timesteps 50000 --capture-video
+
+To see the video afterwards, we also had to install vlc by running the command sudo apt install vlc
+
+To find the videos, we had to cd into videos as that is where the videos are
+
+We then ran the command vlc CartPole-v0__ppo__1__1686859748/rl-video-episode-125.mp4 to pull up one of the videos
+
+To run something like the Atari stuff , we would run the command poetry install -E atari 
+
+and then run the command poetry run python cleanrl/ppo_atari.py \ --seed 1 \ --env-id BreakoutNoFrameskip-v4 \ --total-timesteps 50000 --capture-video
+
